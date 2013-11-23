@@ -4,8 +4,10 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
@@ -28,6 +30,7 @@ public class DareApplication extends Application {
 
         ParseTwitterUtils.initialize("ZpidyjsOOKQijCOV4muFDA",
                 "utlv1MXV7n3KepTiwl0mbqxMT5pWSxRl9istTBS8sPY");
+
         //ParseFacebookUtils.initialize("135724333240350");
 
         /*

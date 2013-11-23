@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:theme="@style/DareTheme"
@@ -23,7 +25,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
             -->
         </activity>
@@ -37,6 +38,43 @@
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.LoginActivity"/>
-    </application>
+
+        <service android:name="com.parse.PushService" />
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.code4fun.dare.PushNotifHandler">
+            <intent-filter>
+                <action android:name="com.code4fun.dare.PUSH_RECEIVED" />
+            </intent-filter>
+        </receiver><receiver android:name="com.code4fun.dare.PushNotifHandler">
+        <intent-filter>
+            <action android:name="com.code4fun.dare.PUSH_RECEIVED" />
+        </intent-filter>
+    </receiver>
+
+        <receiver android:name="com.code4fun.dare.PushNotifGetDare">
+            <intent-filter>
+                <action android:name="com.code4fun.dare.GET_DARE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.code4fun.dare.PushNotifFinishedDare">
+            <intent-filter>
+                <action android:name="com.code4fun.dare.FIN_DARE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.code4fun.dare.PushNotifDareScore">
+            <intent-filter>
+                <action android:name="com.code4fun.dare.DARE_SCORE" />
+            </intent-filter>
+        </receiver>
+
+        </application>
 
 </manifest>

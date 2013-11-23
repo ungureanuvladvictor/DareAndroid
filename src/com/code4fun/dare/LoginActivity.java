@@ -8,10 +8,12 @@ import android.view.View;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import com.code4fun.dare.PostComm;
+import com.parse.PushService;
 
 public class LoginActivity extends Activity {
 	final String TAG = "LoginActivity";
@@ -28,11 +30,17 @@ public class LoginActivity extends Activity {
                     } else if (user.isNew()) {
                         Log.d("Dare", "User signed up and logged in through Facebook!");
                         Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
-                        startActivity(mainScreen);
+						/*ParseInstallation.getCurrentInstallation().saveInBackground();
+						PushService.setDefaultPushCallback(getApplicationContext(), MainMenuActivity.class, R.drawable.launcher);
+						PushService.subscribe(getApplicationContext(), ParseTwitterUtils.getTwitter().getScreenName(), MainMenuActivity.class);
+						*/startActivity(mainScreen);
                     } else {
 						Log.d("Dare", "User logged in through Facebook!");
                         Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
-                        startActivity(mainScreen);
+						/*ParseInstallation.getCurrentInstallation().saveInBackground();
+						PushService.setDefaultPushCallback(getApplicationContext(), MainMenuActivity.class, R.drawable.launcher);
+						PushService.subscribe(getApplicationContext(), ParseTwitterUtils.getTwitter().getScreenName(), MainMenuActivity.class);
+						*/startActivity(mainScreen);
                     }
                 }
             });
@@ -45,7 +53,6 @@ public class LoginActivity extends Activity {
 
 		setContentView(R.layout.login);
 		findViewById(R.id.loginButton).setOnClickListener(mLoginTwitterListener);
-
         /*
         List<String> permissions = Arrays.asList("basic_info", "user_about_me",
                 "user_relationships", "user_birthday", "user_location");

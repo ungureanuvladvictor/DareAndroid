@@ -8,29 +8,37 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.parse.PushService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class MainMenuActivity extends Activity {
+
+	final String TAG = "MainMenuActivity";
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 
         ListView listView = (ListView) findViewById(R.id.app_inner);
         listView.setAdapter(new StoryAdapter(getApplicationContext(), mocks()));
-		//setupFonts();
-	}
+
+		setupFonts();
+ 	}
 
 	private void setupFonts() {
 		Button scoreButton = (Button) findViewById(R.id.scoreButton);
 		Button inboxButton = (Button) findViewById(R.id.inboxButton);
-		Typeface font = Typeface.createFromAsset(getAssets(), "Aaargh.ttf");
+		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Aaargh.ttf");
 		scoreButton.setTypeface(font);
 		inboxButton.setTypeface(font);
 	}

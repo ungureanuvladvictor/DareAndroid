@@ -25,7 +25,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.story_item_view, null);
         }
-		//Typeface font = Typeface.createFromAsset(getContext().getAssets(), "Aaargh.ttf");
+		Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Aaargh.ttf");
 
         final Story story = getItem(position);
 
@@ -37,10 +37,10 @@ public class StoryAdapter extends ArrayAdapter<Story> {
             image.setImageBitmap(story.image);
         }
 
-		//title.setTypeface(font);
-		//author.setTypeface(font);
+		title.setTypeface(font);
         title.setText(story.title);
-        author.setText("by " + story.author);
+		author.setTypeface(font);
+		author.setText("by " + story.author);
 
         return convertView;
     }
