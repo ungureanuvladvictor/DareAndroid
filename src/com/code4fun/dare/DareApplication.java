@@ -23,12 +23,12 @@ public class DareApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-        /*Parse.initialize(this, "P81h4XXXtSPxb4KJjpMCPecsw4IjRYEUKBXeLrOT",
+        Parse.initialize(this, "P81h4XXXtSPxb4KJjpMCPecsw4IjRYEUKBXeLrOT",
                 "0dQAkL28N3U8ZXS8RDsZs6l125kjQljvM1S7jhoS");
 
         ParseTwitterUtils.initialize("ZpidyjsOOKQijCOV4muFDA",
                 "utlv1MXV7n3KepTiwl0mbqxMT5pWSxRl9istTBS8sPY");
-        ParseFacebookUtils.initialize("135724333240350");
+        //ParseFacebookUtils.initialize("135724333240350");
 
         /*
         try {

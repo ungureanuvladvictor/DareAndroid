@@ -13,33 +13,38 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class LoginActivity extends Activity {
 	final String TAG = "LoginActivity";
-	/** Called when the activity is first created. */
+
+    final View.OnClickListener mLoginTwitterListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            twitterLogin(new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException err) {
+                    if (user == null) {
+                        Log.d("Dare", "Uh oh. The user cancelled the Facebook login.");
+                        view.setEnabled(true);
+                    } else if (user.isNew()) {
+                        Log.d("Dare", "User signed up and logged in through Facebook!");
+                        Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
+                        startActivity(mainScreen);
+                    } else {
+                        Log.d("Dare", "User logged in through Facebook!");
+                        Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
+                        startActivity(mainScreen);
+                    }
+                }
+            });
+            view.setEnabled(false);
+        }
+    };
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.login);
-		Button loginButton = (Button) findViewById(R.id.loginButton);
-		loginButton.setOnClickListener(loginListener);
-
-
-        /*
-        ParseTwitterUtils.logIn(this, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException err) {
-                if (user == null) {
-                    Log.d("Dare", "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew()) {
-                    Log.d("Dare", "User signed up and logged in through Facebook!");
-                } else {
-                    Log.d("Dare", "User logged in through Facebook!");
-                }
-            }
-        });
-        */
+		findViewById(R.id.loginButton).setOnClickListener(mLoginTwitterListener);
 
         /*
         List<String> permissions = Arrays.asList("basic_info", "user_about_me",
@@ -59,13 +64,9 @@ public class LoginActivity extends Activity {
         */
     }
 
-	View.OnClickListener loginListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
-			startActivity(mainScreen);
-		}
-	};
+    private void twitterLogin(LogInCallback logInCallback) {
+        ParseTwitterUtils.logIn(this, logInCallback);
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
