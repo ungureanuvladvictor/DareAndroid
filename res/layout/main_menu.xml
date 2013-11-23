@@ -51,11 +51,12 @@
         </FrameLayout>
     </LinearLayout>
 
-    <FrameLayout
+    <ListView
             android:layout_width="fill_parent"
             android:layout_height="472dp"
-            android:id="@+id/app_inner">
-    </FrameLayout>
+            android:id="@+id/app_inner"
+            android:divider="@null">
+    </ListView>
 
     <LinearLayout
             android:orientation="horizontal"

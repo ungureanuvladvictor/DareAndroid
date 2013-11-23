@@ -3,6 +3,8 @@ package com.code4fun.dare;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -10,21 +12,61 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-/**
- * Created by vvu on 23/11/13.
- */
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 
-        ListView listView = new ListView(getApplicationContext());
-        listView.setAdapter(new StoryAdapter(getApplicationContext(),
-                R.style.com_facebook_loginview_default_style));
-        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.app_inner);
-        viewGroup.addView(listView);
+        ListView listView = (ListView) findViewById(R.id.app_inner);
+        listView.setAdapter(new StoryAdapter(getApplicationContext(), mocks()));
 	}
+
+    ArrayList<Story> mocks() {
+        ArrayList<Story> stories = new ArrayList<Story>();
+
+        final Story s = new Story();
+
+        s.author = "Dominik Kundel";
+
+        s.imageUrl = "http://funlava.com/wp-content/uploads/2013/10/Apple-Mac-OS-X-Lion-Aqua-Wallpaper.jpg";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(s.imageUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    final InputStream input = connection.getInputStream();
+                    final Bitmap image = BitmapFactory.decodeStream(input);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            s.image = image;
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        s.title = "My momma!!!";
+        s.description = "Somebody should do something!";
+
+        for (int i = 0; i < 20; i++) {
+            stories.add(s);
+        }
+
+        return stories;
+    }
 
 	public void onBackPressed(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
