@@ -1,0 +1,10 @@
+.idea
+.DS_STORE
+*.iml
+gen/
+bin/
+out/
+sdks/facebook/out/
+sdks/facebook/gen/
+sdks/facebook/bin/
+project.properties
