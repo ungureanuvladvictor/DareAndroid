@@ -4,12 +4,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#e6ff6b">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="horizontal"
                   android:layout_width="wrap_content"
-                  android:layout_height="55dp"
+                  android:layout_height="60dp"
                   android:baselineAligned="false"
                   android:id="@+id/linearLayout">
 
@@ -52,12 +53,62 @@
 
     <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="472dp"
+            android:background="#616668">
     </FrameLayout>
 
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="60dp">
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/createButton"
+                    android:clickable="false"
+                    android:background="@drawable/create"/>
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/discoverButton"
+                    android:background="@drawable/discover"/>
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/starButton"
+                    android:background="@drawable/star"/>
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/inboxButton"
+                    android:background="@drawable/inbox"/>
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
