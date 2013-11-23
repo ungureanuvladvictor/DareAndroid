@@ -14,7 +14,7 @@ public class DareApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-        Parse.initialize(this, "P81h4XXXtSPxb4KJjpMCPecsw4IjRYEUKBXeLrOT",
+        /*Parse.initialize(this, "P81h4XXXtSPxb4KJjpMCPecsw4IjRYEUKBXeLrOT",
                 "0dQAkL28N3U8ZXS8RDsZs6l125kjQljvM1S7jhoS");
 
         ParseFacebookUtils.initialize("135724333240350");
@@ -25,7 +25,7 @@ public class DareApplication extends Application {
 		// If you would like all objects to be private by default, remove this line.
 		defaultACL.setPublicReadAccess(true);
 		
-		ParseACL.setDefaultACL(defaultACL, true);
+		ParseACL.setDefaultACL(defaultACL, true);*/
 	}
 
 
