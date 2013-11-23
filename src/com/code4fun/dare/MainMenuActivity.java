@@ -24,7 +24,7 @@ public class MainMenuActivity extends Activity {
 
         ListView listView = (ListView) findViewById(R.id.app_inner);
         listView.setAdapter(new StoryAdapter(getApplicationContext(), mocks()));
-		setupFonts();
+		//setupFonts();
 	}
 
 	private void setupFonts() {
