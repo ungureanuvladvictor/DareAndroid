@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="story_item_horizontal_padding">15dp</dimen>
+    <dimen name="story_item_vertical_padding">8dp</dimen>
+    <string name="app_id">135724333240350</string>
+</resources>

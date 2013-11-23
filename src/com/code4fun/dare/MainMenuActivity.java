@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 /**
@@ -17,7 +20,10 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.main_menu);
 
         ListView listView = new ListView(getApplicationContext());
-        //listView.setAdapter();
+        listView.setAdapter(new StoryAdapter(getApplicationContext(),
+                R.style.com_facebook_loginview_default_style));
+        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.app_inner);
+        viewGroup.addView(listView);
 	}
 
 	public void onBackPressed(){

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_height="40dp"
+            android:layout_width="fill_parent"
+            android:background="@drawable/story_item_top_bg"
+            android:layout_marginTop="@dimen/story_item_vertical_padding"
+            android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+            android:layout_marginRight="@dimen/story_item_horizontal_padding"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Lorem Ipsum Your momma"
+            android:background="@drawable/story_item_bot_bg"
+            android:layout_marginBottom="@dimen/story_item_vertical_padding"
+            android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+            android:layout_marginRight="@dimen/story_item_horizontal_padding"/>
+
+</LinearLayout>
+
