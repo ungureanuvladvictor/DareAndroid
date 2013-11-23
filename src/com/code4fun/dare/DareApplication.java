@@ -1,16 +1,14 @@
-package com.parse.starter;
+package com.code4fun.dare;
 
-import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
 
-import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 import android.app.Application;
 
-public class ParseApplication extends Application {
+public class DareApplication extends Application {
 
 	@Override
 	public void onCreate() {
