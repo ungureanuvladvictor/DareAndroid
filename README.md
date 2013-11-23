@@ -1,2 +1,2 @@
-DareAndroid
+dare-android
 ===========
