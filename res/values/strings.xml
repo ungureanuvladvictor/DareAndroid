@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, DareActivity!</string>
     <string name="app_name">Dare</string>
+    <string name="app_id">135724333240350</string>
 </resources>
