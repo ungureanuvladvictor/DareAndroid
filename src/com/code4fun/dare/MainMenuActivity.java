@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.content.DialogInterface;
+import android.widget.ListView;
 
 /**
  * Created by vvu on 23/11/13.
@@ -14,6 +15,9 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+
+        ListView listView = new ListView(getApplicationContext());
+        //listView.setAdapter();
 	}
 
 	public void onBackPressed(){

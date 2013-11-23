@@ -54,7 +54,7 @@
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="472dp"
-            android:background="#616668">
+            android:id="@+id/app_inner">
     </FrameLayout>
 
     <LinearLayout
