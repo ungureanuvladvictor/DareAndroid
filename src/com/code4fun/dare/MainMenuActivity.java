@@ -5,17 +5,15 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.content.DialogInterface;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -26,6 +24,15 @@ public class MainMenuActivity extends Activity {
 
         ListView listView = (ListView) findViewById(R.id.app_inner);
         listView.setAdapter(new StoryAdapter(getApplicationContext(), mocks()));
+		setupFonts();
+	}
+
+	private void setupFonts() {
+		Button scoreButton = (Button) findViewById(R.id.scoreButton);
+		Button inboxButton = (Button) findViewById(R.id.inboxButton);
+		Typeface font = Typeface.createFromAsset(getAssets(), "Aaargh.ttf");
+		scoreButton.setTypeface(font);
+		inboxButton.setTypeface(font);
 	}
 
     ArrayList<Story> mocks() {

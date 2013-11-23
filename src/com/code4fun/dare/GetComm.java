@@ -1,14 +1,9 @@
 package com.code4fun.dare;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -16,9 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Created by vvu on 23/11/13.
@@ -27,16 +19,6 @@ public class GetComm extends AsyncTask<String, Void, String> {
 
 	final String TAG = "GetComm";
 	String GETAnswer;
-
-	public void post(final String json, final String path) {
-		Runnable runnable = new Runnable()  {
-			public void run() {
-
-			}
-		};
-		Thread mythread = new Thread(runnable);
-		mythread.start();
-	}
 
 	private static String convertInputStreamToString(InputStream inputStream) throws IOException{
 		BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
@@ -66,6 +48,6 @@ public class GetComm extends AsyncTask<String, Void, String> {
 	}
 
 	protected void onPostExecute(String result) {
-		//PRODE IMPLEMENT GET ANSWER
+
 	}
 }

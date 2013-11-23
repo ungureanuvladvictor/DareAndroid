@@ -3,6 +3,7 @@ package com.code4fun.dare;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.story_item_view, null);
         }
+		Typeface font = Typeface.createFromAsset(getContext().getAssets(), "Aaargh.ttf");
 
         final Story story = getItem(position);
 
@@ -30,6 +32,8 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         final TextView title = (TextView) convertView.findViewById(R.id.title);
         final TextView author = (TextView) convertView.findViewById(R.id.author);
 
+		title.setTypeface(font);
+		author.setTypeface(font);
         image.setImageBitmap(story.image);
         title.setText(story.title);
         author.setText("by " + story.author);
