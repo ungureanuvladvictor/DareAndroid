@@ -15,7 +15,9 @@ import java.io.InputStreamReader;
 /**
  * Created by vvu on 23/11/13.
  */
-public class GetComm extends AsyncTask<String, Void, String> {
+public abstract class GetComm extends AsyncTask<String, Void, String> {
+
+    final static public String HOST = "http://172.16.2.113:6969";
 
 	final String TAG = "GetComm";
 	String GETAnswer;
@@ -35,7 +37,7 @@ public class GetComm extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... strings) {
 		HttpClient Client = new DefaultHttpClient();
-		HttpGet httpget = new HttpGet("http://172.16.2.113:6969" + strings[0]);
+		HttpGet httpget = new HttpGet(HOST + strings[0]);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		try {
 			String answer = Client.execute(httpget, responseHandler);
@@ -47,7 +49,5 @@ public class GetComm extends AsyncTask<String, Void, String> {
 		return null;
 	}
 
-	protected void onPostExecute(String result) {
-
-	}
+	protected abstract void onPostExecute(String result);
 }

@@ -5,82 +5,99 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.Button;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.parse.PushService;
+import com.parse.ParseTwitterUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class MainMenuActivity extends Activity {
-
 	final String TAG = "MainMenuActivity";
+
+    BaseAdapter mAdapter;
+    String user;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+        user = ParseTwitterUtils.getTwitter().getScreenName();
 
-        ListView listView = (ListView) findViewById(R.id.app_inner);
-        listView.setAdapter(new StoryAdapter(getApplicationContext(), mocks()));
-
-		setupFonts();
+        initLoader();
  	}
 
-	private void setupFonts() {
-		Button scoreButton = (Button) findViewById(R.id.scoreButton);
-		Button inboxButton = (Button) findViewById(R.id.inboxButton);
-		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Aaargh.ttf");
-		scoreButton.setTypeface(font);
-		inboxButton.setTypeface(font);
-	}
-
-    ArrayList<Story> mocks() {
-        ArrayList<Story> stories = new ArrayList<Story>();
-
-        final Story s = new Story();
-
-        s.author = "Dominik Kundel";
-
-        s.imageUrl = "http://funlava.com/wp-content/uploads/2013/10/Apple-Mac-OS-X-Lion-Aqua-Wallpaper.jpg";
-        new Thread(new Runnable() {
+    private void initLoader() {
+        GetComm retriever = new GetComm() {
             @Override
-            public void run() {
+            protected void onPostExecute(String result) {
                 try {
-                    URL url = new URL(s.imageUrl);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    final InputStream input = connection.getInputStream();
-                    final Bitmap image = BitmapFactory.decodeStream(input);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            s.image = image;
-                        }
-                    });
-                } catch (IOException e) {
+                    final ArrayList<Story> stories = new ArrayList<Story>();
+                    JSONArray response = new JSONArray(result);
+                    for (int i = 0; i < response.length(); i++) {
+                        final JSONObject storyJSON = response.getJSONObject(i);
+
+                        final Story story = new Story();
+                        story.author = storyJSON.getString("creator");
+                        story.imageUrl = storyJSON.getString("image");
+                        story.title = storyJSON.getString("name");
+                        story.description = storyJSON.getString("description");
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    if (story.imageUrl.charAt(0) == '/') {
+                                        story.imageUrl = GetComm.HOST + story.imageUrl;
+                                    }
+                                    URL url = new URL(story.imageUrl);
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setDoInput(true);
+                                    connection.connect();
+                                    final InputStream input = connection.getInputStream();
+                                    final Bitmap image = BitmapFactory.decodeStream(input);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            story.image = image;
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+
+                        stories.add(story);
+                    }
+                    onLoadFinished(stories);
+                } catch (NullPointerException e) {
+                    Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
+                    e.printStackTrace();
+                } catch (JSONException e){
+                    Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
                     e.printStackTrace();
                 }
             }
-        }).start();
+        };
 
-        s.title = "My momma!!!";
-        s.description = "Somebody should do something!";
+        retriever.execute("/feed/latest");
+    }
 
-        for (int i = 0; i < 20; i++) {
-            stories.add(s);
-        }
-
-        return stories;
+    private void onLoadFinished(ArrayList<Story> stories) {
+        mAdapter = new StoryAdapter(getApplicationContext(), stories);
+        ListView listView = (ListView) findViewById(R.id.app_inner);
+        listView.setAdapter(mAdapter);
     }
 
 	public void onBackPressed(){

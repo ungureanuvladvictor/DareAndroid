@@ -33,25 +33,6 @@ public class DareApplication extends Application {
 
         //ParseFacebookUtils.initialize("135724333240350");
 
-        /*
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.code4fun.dare",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d("Error1", "NameNotFoundException");
-
-        } catch (NoSuchAlgorithmException e) {
-            Log.d("Error2", "Algorthim");
-
-        }
-        */
-
 		//ParseUser.enableAutomaticUser();
 		//ParseACL defaultACL = new ParseACL();
 	    
