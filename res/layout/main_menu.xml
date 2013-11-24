@@ -24,7 +24,7 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/scoreButton"
                     android:background="@drawable/score"
-                    android:text="   20"
+                    android:text="20"
                     android:singleLine="false"
                     />
         </FrameLayout>

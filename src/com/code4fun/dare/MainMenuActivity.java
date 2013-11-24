@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.content.DialogInterface;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -32,6 +33,14 @@ public class MainMenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
         user = ParseTwitterUtils.getTwitter().getScreenName();
+
+        findViewById(R.id.createButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createActivity = new Intent(getApplicationContext(), CreateActivity.class);
+                startActivity(createActivity);
+            }
+        });
 
         initLoader();
  	}
