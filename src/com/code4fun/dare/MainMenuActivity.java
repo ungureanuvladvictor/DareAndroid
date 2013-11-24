@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.parse.ParseTwitterUtils;
+import com.parse.ParseUser;
+import com.parse.PushService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class MainMenuActivity extends Activity {
 	final String TAG = "MainMenuActivity";
@@ -106,6 +109,7 @@ public class MainMenuActivity extends Activity {
 
 		findViewById(R.id.starButton).setOnClickListener(startClick);
 		findViewById(R.id.discoverButton).setOnClickListener(discoverClick);
+		findViewById(R.id.settingsButton).setOnClickListener(settingsClick);
 
 
 
@@ -230,6 +234,20 @@ public class MainMenuActivity extends Activity {
 			};
 
 			retriever.execute("/feed/starred/" + ParseTwitterUtils.getTwitter().getScreenName());
+		}
+	};
+
+	View.OnClickListener settingsClick = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Set<String> setOfAllSubscriptions = PushService.getSubscriptions(getApplicationContext());
+			for (String s : setOfAllSubscriptions)
+				PushService.unsubscribe(getApplicationContext(), s);
+
+			ParseUser.logOut();
+			Intent mainScreen = new Intent(getApplicationContext(), LoginActivity.class);
+			mainScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(mainScreen);
 		}
 	};
 
