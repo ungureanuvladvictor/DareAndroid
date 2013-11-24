@@ -9,4 +9,5 @@ public class Story {
     public Bitmap image;
     public String description;
     public String id;
+    public boolean starred;
 }

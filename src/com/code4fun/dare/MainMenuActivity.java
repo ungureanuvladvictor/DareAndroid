@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.util.Base64;
 import android.view.View;
 import android.util.Log;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -49,6 +49,8 @@ public class MainMenuActivity extends Activity {
     ImageButton mCreateButton;
     ImageButton mFeedButton;
     ImageButton mFavoritesButton;
+
+    Story mStoryDetail;
 
     Uri mImageUri;
 
@@ -243,6 +245,8 @@ public class MainMenuActivity extends Activity {
                         story.imageUrl = storyJSON.getString("image");
                         story.title = storyJSON.getString("name");
                         story.description = storyJSON.getString("description");
+                        story.id = storyJSON.getString("id");
+                        story.starred = storyJSON.getBoolean("starred");
 
                         new Thread(new Runnable() {
                             @Override
@@ -385,6 +389,25 @@ public class MainMenuActivity extends Activity {
                     }
                     break;
                 case STATE_STORY_DETAIL:
+                    final ArrayList<Story> stories = new ArrayList<Story>();
+                    stories.add(mStoryDetail);
+                    mStoryDetailAdapter = new StoryDetailAdapter(getApplicationContext(), stories);
+                    mListView.setAdapter(mStoryDetailAdapter);
+                    break;
+            }
+
+            switch (state) {
+                case STATE_FAVORITES:
+                case STATE_FEED:
+                    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            mStoryDetail = (Story) mListView.getAdapter().getItem(position);
+                            updateState(State.STATE_STORY_DETAIL);
+                        }
+                    });
+                    break;
+                default:
                     break;
             }
 

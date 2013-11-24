@@ -1,6 +1,6 @@
 package com.code4fun.dare;
 
-import android.content.Context;g
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

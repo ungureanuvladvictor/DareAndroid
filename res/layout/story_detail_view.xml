@@ -32,9 +32,20 @@
         android:layout_marginRight="@dimen/story_item_horizontal_padding"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"/>
+    <TextView
+        android:id="@+id/description"
+        style="@style/StoryText"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"/>
+    <TextView
+        android:id="@+id/author"
+        style="@style/StoryText"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="right"/>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/story_item_bot_bg"
@@ -43,17 +54,32 @@
         android:layout_marginRight="@dimen/story_item_horizontal_padding"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/description"
-            style="@style/StoryText"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"/>
-        <TextView
-            android:id="@+id/author"
-            style="@style/StoryText"
+        <ImageView
+            android:id="@+id/accept"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:gravity="right"/>
+            android:src="@drawable/choose_image"
+            android:scaleType="centerInside"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:id="@+id/favorite"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:src="@drawable/star_active"
+            android:layout_margin="10dp"/>
+        <ImageView
+            android:id="@+id/reject"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:src="@drawable/submit_dare"
+            android:scaleType="centerInside"
+            android:padding="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"/>
     </LinearLayout>
 
 </LinearLayout>
