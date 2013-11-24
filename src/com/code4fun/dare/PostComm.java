@@ -26,6 +26,7 @@ public abstract class PostComm extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... strings) {
+        try {
 		HttpClient Client = new DefaultHttpClient();
 		InputStream inputStream = null;
 		HttpPost httpPost = null;
@@ -68,6 +69,9 @@ public abstract class PostComm extends AsyncTask<String, Void, String> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        } catch (NullPointerException npe) {
+            // shhh
+        }
 		return null;
 	}
 

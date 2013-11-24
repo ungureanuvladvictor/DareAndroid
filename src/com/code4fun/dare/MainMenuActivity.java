@@ -103,6 +103,7 @@ public class MainMenuActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals("com.code4fun.dare.FIN_DARE")) {
+                updateStatus();
 				Util.inform(getApplicationContext(), "Somebody finished your dare, check your timeline !");
 			}
 		}
@@ -113,6 +114,7 @@ public class MainMenuActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals("com.code4fun.dare.GET_DARE")) {
+                updateStatus();
 				Util.inform(getApplicationContext(), "You just got a dare, check your timeline !");
 			}
 		}
@@ -124,7 +126,8 @@ public class MainMenuActivity extends Activity {
 			String action = intent.getAction();
 			String message = intent.getDataString();
 			if (action.equals("com.code4fun.dare.ACC_DARE")) {
-				Util.inform(getApplicationContext(), "Your dare got accepted !");
+                updateStatus();
+                Util.inform(getApplicationContext(), "Your dare got accepted !");
 			}
 		}
 	};
