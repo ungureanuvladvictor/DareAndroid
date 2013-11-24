@@ -19,7 +19,7 @@ public class Util {
 
         InputStream in = null;
         try {
-            final int IMAGE_MAX_SIZE = 1200000; // 1.2MP
+            final int IMAGE_MAX_SIZE = 1400000; // 1.4MP
             in = contentResolver.openInputStream(uri);
 
             // Decode image size

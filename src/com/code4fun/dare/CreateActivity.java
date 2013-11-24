@@ -31,6 +31,7 @@ public class CreateActivity extends Activity {
 
     EditText descriptionText;
     EditText titleText;
+    EditText targetText;
 
     Uri mImageUri;
 
@@ -44,6 +45,7 @@ public class CreateActivity extends Activity {
 
         descriptionText = (EditText) findViewById(R.id.description);
         titleText = (EditText) findViewById(R.id.title);
+        targetText = (EditText) findViewById(R.id.target);
 
         View v = findViewById(R.id.choose_picture);
         v.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +90,7 @@ public class CreateActivity extends Activity {
                     jsonStory.put("creator", user);
                     jsonStory.put("name", titleText.getText());
                     jsonStory.put("description", descriptionText.getText());
+                    jsonStory.put("target", targetText.getText());
                     jsonStory.put("base64img", imageEncoded);
 
                     post.execute("/dare/create", jsonStory.toString());
