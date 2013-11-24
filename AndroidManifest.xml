@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:largeHeap="true"
         android:theme="@style/DareTheme"
         android:name="com.code4fun.dare.DareApplication"
         android:icon="@drawable/launcher"
@@ -50,18 +51,6 @@
         <receiver android:name="com.code4fun.dare.PushNotifHandler">
             <intent-filter>
             <action android:name="com.code4fun.dare.PUSH_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.code4fun.dare.PushNotifGetDare">
-            <intent-filter>
-                <action android:name="com.code4fun.dare.GET_DARE" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.code4fun.dare.PushNotifFinishedDare">
-            <intent-filter>
-                <action android:name="com.code4fun.dare.FIN_DARE" />
             </intent-filter>
         </receiver>
 

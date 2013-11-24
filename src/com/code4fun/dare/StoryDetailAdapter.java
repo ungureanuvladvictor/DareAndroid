@@ -89,10 +89,12 @@ public class StoryDetailAdapter extends ArrayAdapter<Story> {
                 if (story.starred) {
                     url = "/user/unstar";
                     message = "Dare unfavorited";
+                    story.starred = false;
                     iv.setImageResource(R.drawable.star_inactive);
                 } else {
                     url = "/user/star";
                     message = "Dare favorited";
+                    story.starred = true;
                     iv.setImageResource(R.drawable.star_active);
                 }
 
@@ -114,7 +116,6 @@ public class StoryDetailAdapter extends ArrayAdapter<Story> {
                     post.execute(url, jsonStory.toString());
                 } catch (JSONException e) {
                     Util.inform(getContext(), "Could not accept Dare.");
-                    v.setEnabled(true);
                     e.printStackTrace();
                 }
             }

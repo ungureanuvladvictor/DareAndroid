@@ -68,7 +68,7 @@ public class MainMenuActivity extends Activity {
     BaseAdapter mAdapter;
     String mUser;
 
-	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver mReceiverScore = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
@@ -93,6 +93,62 @@ public class MainMenuActivity extends Activity {
 					}
 				};
 				fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+			}
+		}
+	};
+
+	private BroadcastReceiver mReceiverFinishedDare = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals("com.code4fun.dare.FIN_DARE")) {
+				GetComm fetch = new GetComm() {
+					@Override
+					protected void onPostExecute(String result) {
+						try {
+							JSONObject answer = new JSONObject(result);
+							final String score = answer.getString("score");
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+
+								}
+							});
+
+						} catch (JSONException e1) {
+							e1.printStackTrace();
+						}
+					}
+				};
+				//fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+			}
+		}
+	};
+
+	private BroadcastReceiver mReceiverGetDare = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals("com.code4fun.dare.GET_DARE")) {
+				GetComm fetch = new GetComm() {
+					@Override
+					protected void onPostExecute(String result) {
+						try {
+							JSONObject answer = new JSONObject(result);
+							final String score = answer.getString("score");
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+
+								}
+							});
+
+						} catch (JSONException e1) {
+							e1.printStackTrace();
+						}
+					}
+				};
+				//fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
 			}
 		}
 	};
@@ -130,8 +186,15 @@ public class MainMenuActivity extends Activity {
         mListView = (ListView) findViewById(R.id.app_inner);
 
 		updateStatus();
+
 		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
-		registerReceiver(mReceiver, filterScore);
+		registerReceiver(mReceiverScore, filterScore);
+
+		IntentFilter filterFinDare = new IntentFilter("com.code4fun.dare.FIN_DARE");
+		registerReceiver(mReceiverFinishedDare, filterFinDare);
+
+		IntentFilter filterGetDare = new IntentFilter("com.code4fun.dare.GET_DARE");
+		registerReceiver(mReceiverGetDare, filterGetDare);
 
         mCreateButton = (ImageButton) findViewById(R.id.createButton);
         mFeedButton = (ImageButton) findViewById(R.id.discoverButton);
@@ -324,7 +387,9 @@ public class MainMenuActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 
-		unregisterReceiver(mReceiver);
+		unregisterReceiver(mReceiverScore);
+		unregisterReceiver(mReceiverFinishedDare);
+		unregisterReceiver(mReceiverGetDare);
 	}
 
 	@Override
@@ -332,7 +397,13 @@ public class MainMenuActivity extends Activity {
 		super.onResume();
 
 		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
-		registerReceiver(mReceiver, filterScore);
+		registerReceiver(mReceiverScore, filterScore);
+
+		IntentFilter filterFinDare = new IntentFilter("com.code4fun.dare.FIN_DARE");
+		registerReceiver(mReceiverFinishedDare, filterFinDare);
+
+		IntentFilter filterGetDare = new IntentFilter("com.code4fun.dare.GET_DARE");
+		registerReceiver(mReceiverGetDare, filterGetDare);
 	}
 
     private void onLoadFinished(ArrayList<Story> stories) {
