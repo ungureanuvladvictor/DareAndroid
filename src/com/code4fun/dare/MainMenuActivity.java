@@ -14,6 +14,7 @@ import android.view.View;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.parse.ParseTwitterUtils;
@@ -33,6 +34,26 @@ import java.util.Set;
 
 public class MainMenuActivity extends Activity {
 	final String TAG = "MainMenuActivity";
+
+    BaseAdapter mCreateStoryAdapter;
+    BaseAdapter mFeedAdapter;
+    BaseAdapter mFavoritesAdapter;
+    BaseAdapter mStoryDetailAdapter;
+
+    ImageButton mCreateButton;
+    ImageButton mFeedButton;
+    ImageButton mFavoritesButton;
+
+    ListView mListView;
+
+    enum State {
+        STATE_CREATE,
+        STATE_FEED,
+        STATE_FAVORITES,
+        STATE_STORY_DETAIL,
+    };
+
+    State mState;
 
     BaseAdapter mAdapter;
     String mUser;
@@ -93,7 +114,9 @@ public class MainMenuActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+
         mUser = ParseTwitterUtils.getTwitter().getScreenName();
+        mListView = (ListView) findViewById(R.id.app_inner);
 
 		updateStatus();
 		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
@@ -107,16 +130,40 @@ public class MainMenuActivity extends Activity {
             }
         });
 
-		findViewById(R.id.starButton).setOnClickListener(startClick);
-		findViewById(R.id.discoverButton).setOnClickListener(discoverClick);
-		findViewById(R.id.settingsButton).setOnClickListener(settingsClick);
+        mCreateButton = (ImageButton) findViewById(R.id.createButton);
+        mFeedButton = (ImageButton) findViewById(R.id.discoverButton);
+        mFavoritesButton = (ImageButton) findViewById(R.id.starButton);
 
+        mFeedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateState(State.STATE_FEED);
+            }
+        });
+        mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateState(State.STATE_FAVORITES);
+            }
+        });
 
+		findViewById(R.id.settingsButton).setOnClickListener(logoutClick);
 
-        initLoader("/feed/latest");
+        updateState(State.STATE_FEED);
  	}
 
-    private void initLoader(String url) {
+    private void initLoader() {
+        String url = null;
+        switch (mState) {
+            case STATE_FEED:
+                url = "/feed/latest/" + mUser;
+                break;
+            case STATE_FAVORITES:
+                url = "/feed/starred/" + mUser;
+                break;
+            default:
+                break;
+        }
         GetComm retriever = new GetComm() {
             @Override
             protected void onPostExecute(String result) {
@@ -149,7 +196,16 @@ public class MainMenuActivity extends Activity {
                                         @Override
                                         public void run() {
                                             story.image = image;
-                                            mAdapter.notifyDataSetChanged();
+                                            switch (mState) {
+                                                case STATE_FEED:
+                                                    mFeedAdapter.notifyDataSetChanged();
+                                                    break;
+                                                case STATE_FAVORITES:
+                                                    mFavoritesAdapter.notifyDataSetChanged();
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         }
                                     });
                                 } catch (IOException e) {
@@ -172,9 +228,11 @@ public class MainMenuActivity extends Activity {
         };
 
         retriever.execute(url);
+
+
     }
 
-	View.OnClickListener startClick = new View.OnClickListener() {
+	View.OnClickListener feedClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
 			GetComm retriever = new GetComm() {
@@ -237,7 +295,7 @@ public class MainMenuActivity extends Activity {
 		}
 	};
 
-	View.OnClickListener settingsClick = new View.OnClickListener() {
+	View.OnClickListener logoutClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
 			Set<String> setOfAllSubscriptions = PushService.getSubscriptions(getApplicationContext());
@@ -254,6 +312,7 @@ public class MainMenuActivity extends Activity {
 	View.OnClickListener discoverClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
+
 			GetComm retriever = new GetComm() {
 				@Override
 				protected void onPostExecute(String result) {
@@ -330,10 +389,64 @@ public class MainMenuActivity extends Activity {
 	}
 
     private void onLoadFinished(ArrayList<Story> stories) {
-        mAdapter = new StoryAdapter(getApplicationContext(), stories);
-		findViewById(R.id.discoverButton).setEnabled(false);
-        ListView listView = (ListView) findViewById(R.id.app_inner);
-        listView.setAdapter(mAdapter);
+        switch (mState) {
+            case STATE_FEED:
+                mFeedAdapter = new StoryAdapter(getApplicationContext(), stories);
+            case STATE_FAVORITES:
+                mFavoritesAdapter = new StoryAdapter(getApplicationContext(), stories);
+                break;
+            default:
+                break;
+        }
+
+        switch (mState) {
+            case STATE_CREATE:
+                mListView.setAdapter(mCreateStoryAdapter);
+                break;
+            case STATE_FEED:
+                mListView.setAdapter(mFeedAdapter);
+                break;
+            case STATE_FAVORITES:
+                mListView.setAdapter(mFavoritesAdapter);
+                break;
+            case STATE_STORY_DETAIL:
+                mListView.setAdapter(mStoryDetailAdapter);
+                break;
+        }
+    }
+
+    private void updateState(State state) {
+        if (mState == null || mState != state) {
+            mCreateButton.setEnabled(true);
+            mFeedButton.setEnabled(true);
+            mFavoritesButton.setEnabled(true);
+            switch (state) {
+                case STATE_CREATE:
+                    mCreateButton.setEnabled(false);
+                    if (mCreateStoryAdapter != null) {
+                        mListView.setAdapter(mCreateStoryAdapter);
+                    }
+                    break;
+                case STATE_FEED:
+                    mFeedButton.setEnabled(false);
+                    if (mFeedAdapter != null) {
+                        mListView.setAdapter(mFeedAdapter);
+                    }
+                    break;
+                case STATE_FAVORITES:
+                    mFavoritesButton.setEnabled(false);
+                    if (mFavoritesAdapter != null) {
+                        mListView.setAdapter(mFavoritesAdapter);
+                    }
+                    break;
+                case STATE_STORY_DETAIL:
+                    break;
+            }
+
+            mState = state;
+
+            initLoader();
+        }
     }
 
 	public void onBackPressed(){
