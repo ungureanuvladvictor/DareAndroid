@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
@@ -102,25 +103,7 @@ public class MainMenuActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals("com.code4fun.dare.FIN_DARE")) {
-				GetComm fetch = new GetComm() {
-					@Override
-					protected void onPostExecute(String result) {
-						try {
-							JSONObject answer = new JSONObject(result);
-							final String score = answer.getString("score");
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-
-								}
-							});
-
-						} catch (JSONException e1) {
-							e1.printStackTrace();
-						}
-					}
-				};
-				//fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+				Util.inform(getApplicationContext(), "Somebody finished your dare, check your timeline !");
 			}
 		}
 	};
@@ -130,25 +113,18 @@ public class MainMenuActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals("com.code4fun.dare.GET_DARE")) {
-				GetComm fetch = new GetComm() {
-					@Override
-					protected void onPostExecute(String result) {
-						try {
-							JSONObject answer = new JSONObject(result);
-							final String score = answer.getString("score");
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
+				Util.inform(getApplicationContext(), "You just got a dare, check your timeline !");
+			}
+		}
+	};
 
-								}
-							});
-
-						} catch (JSONException e1) {
-							e1.printStackTrace();
-						}
-					}
-				};
-				//fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+	private BroadcastReceiver mReceiverAccDare = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			String message = intent.getDataString();
+			if (action.equals("com.code4fun.dare.ACC_DARE")) {
+				Util.inform(getApplicationContext(), "Your dare got accepted !");
 			}
 		}
 	};
@@ -195,6 +171,9 @@ public class MainMenuActivity extends Activity {
 
 		IntentFilter filterGetDare = new IntentFilter("com.code4fun.dare.GET_DARE");
 		registerReceiver(mReceiverGetDare, filterGetDare);
+
+		IntentFilter filterAccDare = new IntentFilter("com.code4fun.dare.ACC_DARE");
+		registerReceiver(mReceiverAccDare, filterAccDare);
 
         mCreateButton = (ImageButton) findViewById(R.id.createButton);
         mFeedButton = (ImageButton) findViewById(R.id.discoverButton);
@@ -390,6 +369,7 @@ public class MainMenuActivity extends Activity {
 		unregisterReceiver(mReceiverScore);
 		unregisterReceiver(mReceiverFinishedDare);
 		unregisterReceiver(mReceiverGetDare);
+		unregisterReceiver(mReceiverAccDare);
 	}
 
 	@Override
@@ -404,6 +384,9 @@ public class MainMenuActivity extends Activity {
 
 		IntentFilter filterGetDare = new IntentFilter("com.code4fun.dare.GET_DARE");
 		registerReceiver(mReceiverGetDare, filterGetDare);
+
+		IntentFilter filterAccDare = new IntentFilter("com.code4fun.dare.ACC_DARE");
+		registerReceiver(mReceiverAccDare, filterAccDare);
 	}
 
     private void onLoadFinished(ArrayList<Story> stories) {
