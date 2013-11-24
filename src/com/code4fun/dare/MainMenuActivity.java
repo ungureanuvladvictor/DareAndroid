@@ -303,6 +303,14 @@ public class MainMenuActivity extends Activity {
 		unregisterReceiver(mReceiver);
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+
+		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
+		registerReceiver(mReceiver, filterScore);
+	}
+
     private void onLoadFinished(ArrayList<Story> stories) {
         mAdapter = new StoryAdapter(getApplicationContext(), stories);
 		findViewById(R.id.discoverButton).setEnabled(false);
