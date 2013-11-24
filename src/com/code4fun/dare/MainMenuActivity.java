@@ -392,9 +392,36 @@ public class MainMenuActivity extends Activity {
     private void onLoadFinished(ArrayList<Story> stories) {
         switch (mState) {
             case STATE_FEED:
-                mFeedAdapter = new StoryAdapter(getApplicationContext(), stories);
+                if (mFeedAdapter != null && mFeedAdapter.getCount() == stories.size()) {
+                    for (int i = 0; i < stories.size(); i++) {
+                        final Story insertedStory = ((StoryAdapter) mFeedAdapter).getItem(i);
+                        if (!insertedStory.imageUrl.equals(stories.get(i).imageUrl)) {
+                            ((StoryAdapter) mFeedAdapter).insert(stories.get(i), i);
+                        }
+                    }
+                } else {
+                    mFeedAdapter = new StoryAdapter(getApplicationContext(), stories);
+                    mListView.setAdapter(mFeedAdapter);
+                }
+                break;
             case STATE_FAVORITES:
-                mFavoritesAdapter = new StoryAdapter(getApplicationContext(), stories);
+                if (mFavoritesAdapter != null && mFavoritesAdapter.getCount() == stories.size()) {
+                    for (int i = 0; i < stories.size(); i++) {
+                        Log.d(TAG, new Integer(mFavoritesAdapter.getCount()).toString());
+                        final Story insertedStory = ((StoryAdapter) mFavoritesAdapter).getItem(i);
+                        Log.d(TAG, new Integer(mFavoritesAdapter.getCount()).toString());
+                        if (!insertedStory.imageUrl.equals(stories.get(i).imageUrl)) {
+                            ((StoryAdapter) mFavoritesAdapter).insert(stories.get(i), i);
+                        }
+                        Log.d(TAG, insertedStory.imageUrl);
+                        Log.d(TAG, stories.get(i).imageUrl);
+                        Log.d(TAG, new Boolean(insertedStory.imageUrl.equals(stories.get(i).imageUrl)).toString());
+                        Log.d(TAG, new Integer(mFavoritesAdapter.getCount()).toString());
+                    }
+                } else {
+                    mFavoritesAdapter = new StoryAdapter(getApplicationContext(), stories);
+                    mListView.setAdapter(mFavoritesAdapter);
+                }
                 break;
             default:
                 break;
@@ -405,10 +432,8 @@ public class MainMenuActivity extends Activity {
                 mListView.setAdapter(mCreateStoryAdapter);
                 break;
             case STATE_FEED:
-                mListView.setAdapter(mFeedAdapter);
                 break;
             case STATE_FAVORITES:
-                mListView.setAdapter(mFavoritesAdapter);
                 break;
             case STATE_STORY_DETAIL:
                 mListView.setAdapter(mStoryDetailAdapter);
