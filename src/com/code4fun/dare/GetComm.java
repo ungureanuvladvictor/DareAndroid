@@ -50,4 +50,6 @@ public abstract class GetComm extends AsyncTask<String, Void, String> {
 	}
 
 	protected abstract void onPostExecute(String result);
+
+
 }

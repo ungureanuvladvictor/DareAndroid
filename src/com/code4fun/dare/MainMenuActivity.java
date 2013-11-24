@@ -2,13 +2,18 @@ package com.code4fun.dare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.content.DialogInterface;
 import android.view.View;
+import android.util.Log;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.parse.ParseTwitterUtils;
@@ -27,12 +32,69 @@ public class MainMenuActivity extends Activity {
 	final String TAG = "MainMenuActivity";
 
     BaseAdapter mAdapter;
-    String user;
+    String mUser;
+
+	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals("com.code4fun.dare.DARE_SCORE")) {
+				GetComm fetch = new GetComm() {
+					@Override
+					protected void onPostExecute(String result) {
+						try {
+							JSONObject answer = new JSONObject(result);
+							final String score = answer.getString("score");
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									Button scoreButton = (Button) findViewById(R.id.scoreButton);
+									scoreButton.setText("   " + score);
+								}
+							});
+
+						} catch (JSONException e1) {
+							e1.printStackTrace();
+						}
+					}
+				};
+				fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+			}
+		}
+	};
+
+	public void updateStatus() {
+		GetComm fetch = new GetComm() {
+			@Override
+			protected void onPostExecute(String result) {
+				try {
+					JSONObject answer = new JSONObject(result);
+					Log.d(TAG, "score: " + answer.get("score"));
+					final String score = answer.getString("score");
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Button scoreButton = (Button) findViewById(R.id.scoreButton);
+							scoreButton.setText("   " + score);
+						}
+					});
+
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+			}
+		};
+		fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-        user = ParseTwitterUtils.getTwitter().getScreenName();
+        mUser = ParseTwitterUtils.getTwitter().getScreenName();
+
+		updateStatus();
+		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
+		registerReceiver(mReceiver, filterScore);
 
         findViewById(R.id.createButton).setOnClickListener(new View.OnClickListener() {
             @Override
