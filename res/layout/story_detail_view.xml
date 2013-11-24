@@ -32,18 +32,37 @@
         android:layout_marginRight="@dimen/story_item_horizontal_padding"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"/>
     <TextView
         android:id="@+id/description"
         style="@style/StoryText"
+        android:background="@color/story_item_border"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_width="fill_parent"/>
     <TextView
         android:id="@+id/author"
         style="@style/StoryText"
+        android:background="@color/story_item_border"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:padding="10dp"
         android:gravity="right"/>
-
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
