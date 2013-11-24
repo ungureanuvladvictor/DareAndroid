@@ -10,4 +10,5 @@ public class Story {
     public String description;
     public String id;
     public boolean starred;
+    public boolean accepted;
 }

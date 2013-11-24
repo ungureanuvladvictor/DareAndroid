@@ -46,6 +46,10 @@ public class StoryDetailAdapter extends ArrayAdapter<Story> {
             favorite.setImageResource(R.drawable.star_inactive);
         }
 
+        if (story.accepted) {
+            accept.setImageResource(R.drawable.accomplish);
+        }
+
         if (story.image != null) {
             image.setImageBitmap(story.image);
         }
@@ -53,14 +57,30 @@ public class StoryDetailAdapter extends ArrayAdapter<Story> {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setEnabled(false);
-                reject.setEnabled(true);
+                final ImageView iv = (ImageView) v;
+                final String url;
+                final String message;
+                if (story.accepted) {
+                    url = "/request/done";
+                    message = "Dare completed";
+                    iv.setImageResource(R.drawable.accomplish_pressed);
+                } else {
+                    url = "/dare/accept";
+                    message = "Dare accepted";
+                    iv.setImageResource(R.drawable.accept_button);
+                }
 
                 PostComm post = new PostComm() {
                     @Override
                     protected void onPostExecute(String result) {
                         Log.d(TAG, result);
-                        Util.inform(getContext(), "Dare accepted");
+                        if (story.accepted) {
+                            iv.setEnabled(false);
+                        } else {
+                            story.accepted = true;
+                            iv.setImageResource(R.drawable.accomplish);
+                        }
+                        Util.inform(getContext(), message);
                     }
                 };
 
@@ -68,12 +88,16 @@ public class StoryDetailAdapter extends ArrayAdapter<Story> {
                     final Story story = getItem(0);
 
                     JSONObject jsonStory = new JSONObject();
-                    jsonStory.put("dareid", story.id);
+                    if (story.accepted) {
+                        jsonStory.put("id", story.id);
+                    } else {
+                        jsonStory.put("dareid", story.id);
+                    }
                     jsonStory.put("username", ParseTwitterUtils.getTwitter().getScreenName());
 
-                    post.execute("/dare/accept", jsonStory.toString());
+                    post.execute(url, jsonStory.toString());
                 } catch (JSONException e) {
-                    Util.inform(getContext(), "Could not accept Dare.");
+                    Util.inform(getContext(), "Could not perform action.");
                     v.setEnabled(true);
                     e.printStackTrace();
                 }

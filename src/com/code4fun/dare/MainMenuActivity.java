@@ -287,6 +287,7 @@ public class MainMenuActivity extends Activity {
                         story.imageUrl = storyJSON.getString("image");
                         story.title = storyJSON.getString("name");
                         story.description = storyJSON.getString("description");
+                        story.accepted = storyJSON.getBoolean("accepted");
                         story.id = storyJSON.getString("id");
                         story.starred = storyJSON.getBoolean("starred");
 
