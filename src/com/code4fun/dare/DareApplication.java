@@ -30,16 +30,5 @@ public class DareApplication extends Application {
 
         ParseTwitterUtils.initialize("ZpidyjsOOKQijCOV4muFDA",
                 "utlv1MXV7n3KepTiwl0mbqxMT5pWSxRl9istTBS8sPY");
-
-        //ParseFacebookUtils.initialize("135724333240350");
-
-		//ParseUser.enableAutomaticUser();
-		//ParseACL defaultACL = new ParseACL();
-	    
-		// If you would like all objects to be private by default, remove this line.
-		//defaultACL.setPublicReadAccess(true);
 	}
-
-
-
 }

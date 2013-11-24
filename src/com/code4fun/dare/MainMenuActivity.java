@@ -108,6 +108,7 @@ public class MainMenuActivity extends Activity {
 				}
 			}
 		};
+
 		fetch.execute("/user/" + ParseTwitterUtils.getTwitter().getScreenName());
 	}
 
@@ -147,8 +148,7 @@ public class MainMenuActivity extends Activity {
             }
         });
 
-		findViewById(R.id.settingsButton).setOnClickListener(logoutClick);
-
+		findViewById(R.id.logoutButton).setOnClickListener(logoutClick);
         updateState(State.STATE_FEED);
  	}
 
@@ -232,69 +232,6 @@ public class MainMenuActivity extends Activity {
 
     }
 
-	View.OnClickListener feedClick = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			GetComm retriever = new GetComm() {
-				@Override
-				protected void onPostExecute(String result) {
-					try {
-						final ArrayList<Story> stories = new ArrayList<Story>();
-						JSONArray response = new JSONArray(result);
-						for (int i = 0; i < response.length(); i++) {
-							final JSONObject storyJSON = response.getJSONObject(i);
-
-							final Story story = new Story();
-							story.author = storyJSON.getString("creator");
-							story.imageUrl = storyJSON.getString("image");
-							story.title = storyJSON.getString("name");
-							story.description = storyJSON.getString("description");
-
-							new Thread(new Runnable() {
-								@Override
-								public void run() {
-									try {
-										if (story.imageUrl.charAt(0) == '/') {
-											story.imageUrl = GetComm.HOST + story.imageUrl;
-										}
-										URL url = new URL(story.imageUrl);
-										HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-										connection.setDoInput(true);
-										connection.connect();
-										final InputStream input = connection.getInputStream();
-										final Bitmap image = BitmapFactory.decodeStream(input);
-										runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												story.image = image;
-												mAdapter.notifyDataSetChanged();
-											}
-										});
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							}).start();
-
-							stories.add(story);
-						}
-						onLoadFinished(stories);
-						findViewById(R.id.starButton).setEnabled(false);
-						findViewById(R.id.discoverButton).setEnabled(true);
-					} catch (NullPointerException e) {
-						Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
-						e.printStackTrace();
-					} catch (JSONException e){
-						Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
-						e.printStackTrace();
-					}
-				}
-			};
-
-			retriever.execute("/feed/starred/" + ParseTwitterUtils.getTwitter().getScreenName());
-		}
-	};
-
 	View.OnClickListener logoutClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
@@ -309,73 +246,9 @@ public class MainMenuActivity extends Activity {
 		}
 	};
 
-	View.OnClickListener discoverClick = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-
-			GetComm retriever = new GetComm() {
-				@Override
-				protected void onPostExecute(String result) {
-					try {
-						final ArrayList<Story> stories = new ArrayList<Story>();
-						JSONArray response = new JSONArray(result);
-						for (int i = 0; i < response.length(); i++) {
-							final JSONObject storyJSON = response.getJSONObject(i);
-
-							final Story story = new Story();
-							story.author = storyJSON.getString("creator");
-							story.imageUrl = storyJSON.getString("image");
-							story.title = storyJSON.getString("name");
-							story.description = storyJSON.getString("description");
-
-							new Thread(new Runnable() {
-								@Override
-								public void run() {
-									try {
-										if (story.imageUrl.charAt(0) == '/') {
-											story.imageUrl = GetComm.HOST + story.imageUrl;
-										}
-										URL url = new URL(story.imageUrl);
-										HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-										connection.setDoInput(true);
-										connection.connect();
-										InputStream input = connection.getInputStream();
-										final Bitmap image = BitmapFactory.decodeStream(input);
-										runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												story.image = image;
-												mAdapter.notifyDataSetChanged();
-											}
-										});
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							}).start();
-
-							stories.add(story);
-						}
-						onLoadFinished(stories);
-						findViewById(R.id.discoverButton).setEnabled(false);
-						findViewById(R.id.starButton).setEnabled(true);
-					} catch (NullPointerException e) {
-						Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
-						e.printStackTrace();
-					} catch (JSONException e){
-						Util.inform(getApplicationContext(), "Stories cannot be retrieved at this time");
-						e.printStackTrace();
-					}
-				}
-			};
-
-			retriever.execute("/feed/latest");
-		}
-	};
-
 	@Override
 	public void onPause() {
-		super.onPause();  // Always call the superclass method first
+		super.onPause();
 
 		unregisterReceiver(mReceiver);
 	}

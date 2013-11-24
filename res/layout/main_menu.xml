@@ -48,8 +48,8 @@
             <ImageButton
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/settingsButton"
-                    android:background="@drawable/settings_button"/>
+                    android:id="@+id/logoutButton"
+                    android:background="@drawable/logout_button"/>
         </FrameLayout>
     </LinearLayout>
 
