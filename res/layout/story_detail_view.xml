@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_gravity="center"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"
+        android:layout_marginTop="@dimen/story_item_vertical_padding"
+        android:background="@drawable/story_item_top_bg"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/title"
+            android:textStyle="bold"
+            style="@style/StoryText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/story_item_bot_bg"
+        android:layout_marginBottom="@dimen/story_item_vertical_padding"
+        android:layout_marginLeft="@dimen/story_item_horizontal_padding"
+        android:layout_marginRight="@dimen/story_item_horizontal_padding"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/StoryText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
+        <TextView
+            android:id="@+id/author"
+            style="@style/StoryText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="right"/>
+    </LinearLayout>
 
 </LinearLayout>
+

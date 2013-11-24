@@ -8,13 +8,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.content.DialogInterface;
+import android.util.Base64;
 import android.view.View;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.ParseTwitterUtils;
@@ -25,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -43,6 +49,8 @@ public class MainMenuActivity extends Activity {
     ImageButton mCreateButton;
     ImageButton mFeedButton;
     ImageButton mFavoritesButton;
+
+    Uri mImageUri;
 
     ListView mListView;
 
@@ -123,18 +131,16 @@ public class MainMenuActivity extends Activity {
 		IntentFilter filterScore = new IntentFilter("com.code4fun.dare.DARE_SCORE");
 		registerReceiver(mReceiver, filterScore);
 
-        findViewById(R.id.createButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent createActivity = new Intent(getApplicationContext(), CreateActivity.class);
-                startActivity(createActivity);
-            }
-        });
-
         mCreateButton = (ImageButton) findViewById(R.id.createButton);
         mFeedButton = (ImageButton) findViewById(R.id.discoverButton);
         mFavoritesButton = (ImageButton) findViewById(R.id.starButton);
 
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateState(State.STATE_CREATE);
+            }
+        });
         mFeedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +157,65 @@ public class MainMenuActivity extends Activity {
 		findViewById(R.id.logoutButton).setOnClickListener(logoutClick);
         updateState(State.STATE_FEED);
  	}
+
+    private void initCreateStoryView() {
+        View createStoryView = CreateStoryAdapter.createStoryView;
+
+        final EditText descriptionText = (EditText) createStoryView.findViewById(R.id.description);
+        final EditText titleText = (EditText) createStoryView.findViewById(R.id.title);
+        final EditText targetText = (EditText) createStoryView.findViewById(R.id.target);
+
+        View v = createStoryView.findViewById(R.id.choose_picture);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 1);
+            }
+        });
+
+        v = createStoryView.findViewById(R.id.story_submit);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostComm post = new PostComm() {
+                    @Override
+                    protected void onPostExecute(String result) {
+                        Log.d(TAG, result);
+                        Util.inform(getApplicationContext(), "Dare created");
+                    }
+                };
+
+                try {
+                    final Bitmap scaledBitmap = Util.getScaledBitmap(getContentResolver(), mImageUri);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+                    byte[] b = baos.toByteArray();
+                    String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+                    JSONObject jsonStory = new JSONObject();
+                    jsonStory.put("creator", mUser);
+                    jsonStory.put("name", titleText.getText());
+                    jsonStory.put("description", descriptionText.getText());
+                    jsonStory.put("target", targetText.getText());
+                    jsonStory.put("base64img", imageEncoded);
+
+                    post.execute("/dare/create", jsonStory.toString());
+
+                    scaledBitmap.recycle();
+                } catch (JSONException e) {
+                    Util.inform(getApplicationContext(), "Could not create Dare.");
+                    e.printStackTrace();
+                } finally {
+                    updateState(State.STATE_FEED);
+                    Util.inform(getApplicationContext(), "Uploading Dare...");
+                    mCreateStoryAdapter = null;
+                    CreateStoryAdapter.createStoryView = null;
+                }
+            }
+        });
+    }
 
     private void initLoader() {
         String url = null;
@@ -227,9 +292,14 @@ public class MainMenuActivity extends Activity {
             }
         };
 
-        retriever.execute(url);
-
-
+        switch (mState) {
+            case STATE_FEED:
+            case STATE_FAVORITES:
+                retriever.execute(url);
+                break;
+            default:
+                break;
+        }
     }
 
 	View.OnClickListener logoutClick = new View.OnClickListener() {
@@ -296,9 +366,11 @@ public class MainMenuActivity extends Activity {
             switch (state) {
                 case STATE_CREATE:
                     mCreateButton.setEnabled(false);
-                    if (mCreateStoryAdapter != null) {
-                        mListView.setAdapter(mCreateStoryAdapter);
+                    if (mCreateStoryAdapter == null) {
+                        mCreateStoryAdapter = new CreateStoryAdapter(getApplicationContext());
                     }
+                    mListView.setAdapter(mCreateStoryAdapter);
+                    initCreateStoryView();
                     break;
                 case STATE_FEED:
                     mFeedButton.setEnabled(false);
@@ -344,4 +416,20 @@ public class MainMenuActivity extends Activity {
 			}
 		}
 	};
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK){
+                    final ImageView imagePreview =(ImageView) CreateStoryAdapter.createStoryView.
+                            findViewById(R.id.image_preview);
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imagePreview.setImageURI(selectedImage);
+                    mImageUri = selectedImage;
+                }
+                break;
+        }
+    }
 }
