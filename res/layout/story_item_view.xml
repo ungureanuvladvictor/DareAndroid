@@ -47,14 +47,12 @@
                 android:id="@+id/description"
                 style="@style/StoryText"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:text="Lorem Ipsum Your momma"/>
+                android:layout_width="fill_parent"/>
             <TextView
                 android:id="@+id/author"
                 style="@style/StoryText"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:text="adsada"
                 android:gravity="right"/>
         </LinearLayout>
 
