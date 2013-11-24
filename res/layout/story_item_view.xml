@@ -17,10 +17,11 @@
             android:background="@drawable/story_item_top_bg"
             android:padding="10dp">
             <TextView
+                android:id="@+id/title"
+                android:textStyle="bold"
                 style="@style/StoryText"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:text="YOUR MOMMA!"/>
+                android:layout_width="fill_parent"/>
         </LinearLayout>
 
         <ImageView
@@ -43,17 +44,15 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/description"
                 style="@style/StoryText"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:text="Lorem Ipsum Your momma"/>
+                android:layout_width="fill_parent"/>
             <TextView
-                style="@style/StoryText"
                 android:id="@+id/author"
+                style="@style/StoryText"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:text="adsada"
                 android:gravity="right"/>
         </LinearLayout>
 

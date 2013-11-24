@@ -24,7 +24,6 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/scoreButton"
                     android:background="@drawable/score"
-                    android:text="   20"
                     android:singleLine="false"
                     />
         </FrameLayout>
@@ -46,11 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0">
 
-            <Button
+            <ImageButton
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/settingsButton"
-                    android:background="@drawable/settings"/>
+                    android:background="@drawable/settings_button"/>
         </FrameLayout>
     </LinearLayout>
 
@@ -72,12 +71,11 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1">
 
-            <Button
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/createButton"
-                    android:clickable="false"
-                    android:background="@drawable/create"/>
+                    android:background="@drawable/create_button"/>
         </FrameLayout>
 
         <FrameLayout
@@ -85,11 +83,11 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1">
 
-            <Button
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/discoverButton"
-                    android:background="@drawable/discover"/>
+                    android:background="@drawable/discover_button"/>
         </FrameLayout>
 
         <FrameLayout
@@ -97,11 +95,11 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1">
 
-            <Button
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/starButton"
-                    android:background="@drawable/star"/>
+                    android:background="@drawable/star_button"/>
         </FrameLayout>
 
         <FrameLayout
@@ -109,11 +107,11 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1">
 
-            <Button
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/inboxButton"
-                    android:background="@drawable/inbox"/>
+                    android:background="@drawable/inbox_button"/>
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

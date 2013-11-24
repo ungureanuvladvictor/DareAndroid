@@ -15,6 +15,8 @@ import com.parse.ParseUser;
 import com.code4fun.dare.PostComm;
 import com.parse.PushService;
 
+import java.io.IOException;
+
 public class LoginActivity extends Activity {
 	final String TAG = "LoginActivity";
 
@@ -29,18 +31,30 @@ public class LoginActivity extends Activity {
                         view.setEnabled(true);
                     } else if (user.isNew()) {
                         Log.d("Dare", "User signed up and logged in through Facebook!");
-                        Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
-						/*ParseInstallation.getCurrentInstallation().saveInBackground();
+                        DataFetch sender = new DataFetch(user);
+						try {
+							sender.getData();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
+						ParseInstallation.getCurrentInstallation().saveInBackground();
 						PushService.setDefaultPushCallback(getApplicationContext(), MainMenuActivity.class, R.drawable.launcher);
 						PushService.subscribe(getApplicationContext(), ParseTwitterUtils.getTwitter().getScreenName(), MainMenuActivity.class);
-						*/startActivity(mainScreen);
+						startActivity(mainScreen);
                     } else {
 						Log.d("Dare", "User logged in through Facebook!");
-                        Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
-						/*ParseInstallation.getCurrentInstallation().saveInBackground();
+						DataFetch sender = new DataFetch(user);
+						try {
+							sender.getData();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						Intent mainScreen = new Intent(getApplicationContext(), MainMenuActivity.class);
+						ParseInstallation.getCurrentInstallation().saveInBackground();
 						PushService.setDefaultPushCallback(getApplicationContext(), MainMenuActivity.class, R.drawable.launcher);
 						PushService.subscribe(getApplicationContext(), ParseTwitterUtils.getTwitter().getScreenName(), MainMenuActivity.class);
-						*/startActivity(mainScreen);
+						startActivity(mainScreen);
                     }
                 }
             });

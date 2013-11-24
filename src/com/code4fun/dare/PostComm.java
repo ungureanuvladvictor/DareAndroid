@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 /**
  * Created by vvu on 23/11/13.
  */
-public class PostComm extends AsyncTask<String, Void, String> {
+public abstract class PostComm extends AsyncTask<String, Void, String> {
 	final String TAG = "PostComm";
 	private String POSTResult;
 
@@ -71,9 +71,7 @@ public class PostComm extends AsyncTask<String, Void, String> {
 		return null;
 	}
 
-	protected void onPostExecute(String result) {
-		//PRODE IMPLEMENT POST CALLBACK
-	}
+	protected abstract void onPostExecute(String result);
 
 	private static String convertInputStreamToString(InputStream inputStream) throws IOException{
 		BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));

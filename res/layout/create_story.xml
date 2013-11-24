@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Create Dare"
+            android:textSize="24dp"
+            android:gravity="center"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Title:"/>
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Description:"/>
+    <EditText
+        android:gravity="top|left"
+        android:id="@+id/description"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:lines="8"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="To:"/>
+    <EditText
+        android:id="@+id/target"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:lines="1"
+        android:padding="10dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:padding="5dp">
+        <ImageView
+            android:id="@+id/choose_picture"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:src="@drawable/choose_image"
+            android:scaleType="centerInside"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:id="@+id/story_submit"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:src="@drawable/submit_dare"
+            android:scaleType="centerInside"
+            android:padding="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/image_preview"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+</LinearLayout>

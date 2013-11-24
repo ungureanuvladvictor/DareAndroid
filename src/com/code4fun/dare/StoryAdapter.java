@@ -30,6 +30,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
 
         final ImageView image = (ImageView) convertView.findViewById(R.id.image);
         final TextView title = (TextView) convertView.findViewById(R.id.title);
+        final TextView description = (TextView) convertView.findViewById(R.id.description);
         final TextView author = (TextView) convertView.findViewById(R.id.author);
 
         if (story.image != null) {
@@ -37,6 +38,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         }
 
         title.setText(story.title);
+        description.setText(story.description);
 		author.setText("by " + story.author);
 
         return convertView;
